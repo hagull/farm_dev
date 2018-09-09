@@ -1,0 +1,40 @@
+{% extends "control/layout.html" %}
+{% block content %}
+<div class ="row">
+    <div class = "col-sm-12">
+        <div class="alert alert-info"></div>
+        {# {% if combined_anode_log %} #}
+        <table class = "table table-hover table-bordered">
+
+<!-- 여기서 데이터베이스 SQL 언어 발생-->
+            <thead>
+            <tr>
+                    <th>시간</th>
+                    <th>동</th>
+                    <th>제어기</th>
+                    <th>제어내용</th>
+                    <th>동작확인</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for log in combined_anode_log %}
+            <tr>
+                <td></td>
+                <td></td>
+                <td><small></small></td>
+                <td><small></small></td>
+                <td></td>
+            </tr>
+            </tbody>
+{% endfor %}
+
+
+            </table>
+        {# {% else %} #}
+            <h2>결과 없습니다.</h2>
+            {# {% endif %} #}
+    </div>
+</div>
+
+
+{% endblock %}

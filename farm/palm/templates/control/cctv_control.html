@@ -1,0 +1,57 @@
+{% extends "control/layout.html" %}
+{% block content %}
+{% load palm_filters %}
+
+    {% if all_house_cctv %}
+    {% else %}
+        {% if cctv_exists %}
+    <form action="" method="get">
+        <input type="hidden" name = "house" value = "{{gcg.id}}">
+        <input type="hidden" name = "type" value = "o">
+        <input type = "submit" value = "실외">
+        </form>
+        {% endif %}
+        <form action="" method="get">
+        <input type="hidden" name = "house" value = "{{gcg.id}}">
+        <input type="hidden" name = "type" value = "i">
+        <input type = "submit" value = "실내">
+            </form>
+    {% endif %}
+{% for cctv in gcg_cctv %}
+<div class = "btn btn-primary">{{cctv.gcg}} {{ cctv.get_cctv_type_display }} CCTV {{ forloop.counter }}</div>
+{% endfor %}
+<hr>
+<form action="" method="get">
+    {% if user.allhousecctv_set.all.exists %}
+    <button name = "house" value = "all">전체 실외</button>
+    {% endif %}
+    {% for gcg in user.gcg_set.all %}
+    <button name = "house" value = "{{ gcg.id }}">{{forloop.counter}} 동</button>
+    {% endfor %}
+</form>
+<hr>
+{% if all_house_cctv %}
+{% else %}
+{% filter snode snode_type='t' as temp_snode %}
+{% filter snode snode_type='h' as humd_snode %}
+<h2>Snode Value</h2>
+<div class = "btn btn-primary">{{temp_snode.0}}</div>
+<p>
+<div class = "btn btn-primary">{{humd_snode.0}}</div>
+<h2>Anode Control</h2>
+{% filter anode anode_type='oc' as oc_anode %}
+{% filter anode anode_type='wm' as wm_anode %}
+<h3>Open and Close Anode</h3>
+{% for oc in oc_anode %}
+<div class = "btn btn-primary">{{oc}}</div>
+<div class = "btn btn-primary">Control Box(Form 혹은 JS로 구현)</div>
+<p>
+{% endfor %}
+    <h3>Wartering Motor</h3>
+{% for wm in wm_anode %}
+<div class = "btn btn-primary">{{wm}}</div>
+<div class = "btn btn-primary">Control Box(Form 혹은 JS로 구현)</div>
+<p>
+{% endfor %}
+{% endif %}
+{% endblock %}
