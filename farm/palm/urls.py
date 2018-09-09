@@ -5,7 +5,6 @@ urlpatterns = [
     path('index/', views.index, name = 'index'),
 
     path('control/', views.control, name = 'control'),
-    path('control/<int:n_house>/', views.control_n, name = 'control_n'),
     path('control/log/', views.control_log, name = 'control_log'),
 
     path('category/', views.category, name = 'category'),
