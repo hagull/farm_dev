@@ -4,3 +4,6 @@ from . import models
 class UserAdmin(admin.ModelAdmin):
     pass
 # Register your models here.
+@admin.register(models.Profile)
+class ProfileAdmin(admin.ModelAdmin):
+    pass

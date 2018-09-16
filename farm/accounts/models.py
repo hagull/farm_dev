@@ -58,6 +58,7 @@ class User(AbstractBaseUser):
 # 유저의 프로파일 (즉 유저의 개인정보 및 통합제어기 등의 정보가 들어갈예정)
 class Profile(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    # 항목 미정
+    ip_address = models.GenericIPAddressField()
+    ip_port = models.IntegerField()
     def __str__(self):
         return 'Profile Of User : {}'.format(self.user.username)

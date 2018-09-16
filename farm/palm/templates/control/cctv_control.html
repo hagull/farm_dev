@@ -5,18 +5,21 @@
     {% if all_house_cctv %}
     {% else %}
         {% if cctv_exists %}
-    <form action="" method="get">
+<div class = "btn btn-toolbar" role = "toolbar">
+    <form action="" method="get" class = "btn btn-group" role="group">
         <input type="hidden" name = "house" value = "{{gcg.id}}">
         <input type="hidden" name = "type" value = "o">
         <input type = "submit" value = "실외">
         </form>
         {% endif %}
-        <form action="" method="get">
+        <form action="" method="get" class = "btn btn-group" role="group">
         <input type="hidden" name = "house" value = "{{gcg.id}}">
         <input type="hidden" name = "type" value = "i">
         <input type = "submit" value = "실내">
             </form>
+    </div>
     {% endif %}
+<p>
 {% for cctv in gcg_cctv %}
 <div class = "btn btn-primary">{{cctv.gcg}} {{ cctv.get_cctv_type_display }} CCTV {{ forloop.counter }}</div>
 {% endfor %}
@@ -44,13 +47,13 @@
 <h3>Open and Close Anode</h3>
 {% for oc in oc_anode %}
 <div class = "btn btn-primary">{{oc}}</div>
-<div class = "btn btn-primary">Control Box(Form 혹은 JS로 구현)</div>
+<a href="{% url "data:anode_request" gcg.id oc.id %}" class = "btn btn-primary">Anode Control</a>
 <p>
 {% endfor %}
     <h3>Wartering Motor</h3>
 {% for wm in wm_anode %}
 <div class = "btn btn-primary">{{wm}}</div>
-<div class = "btn btn-primary">Control Box(Form 혹은 JS로 구현)</div>
+<a href="{% url "data:anode_request" gcg.id wm.id %}" class = "btn btn-primary">Anode Control</a>
 <p>
 {% endfor %}
 {% endif %}
