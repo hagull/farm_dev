@@ -2,6 +2,7 @@ from django.urls import path, re_path
 from . import views
 app_name = 'palm'
 urlpatterns = [
+    path('', views.base, name='base'),
     path('index/', views.index, name = 'index'),
 
     path('control/', views.control, name = 'control'),

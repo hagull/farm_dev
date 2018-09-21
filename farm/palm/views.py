@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from .models import Gcg, Anode, Snode, AnodeLog
-
+def base(request):
+    return render(request, 'palm/base.html', {})
 def index(request):
     user = request.user
     gcg = user.gcg_set.all()[0]
@@ -66,7 +67,7 @@ def control(request):
             snode = gcg.snode_set.all()
             anode = gcg.anode_set.all()
     # 현재 gcg 통신은 위의 request.get과 같이 처리 혹은 템플릿 자체에서도 가능할듯 함
-    return render(request, 'control/cctv_control.html', {
+    return render(request, 'control_2/cctv_control.html', {
         'user' : user,
         'gcg' : gcg,
         'snode' : snode,
