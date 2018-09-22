@@ -48,9 +48,25 @@ def control(request):
     type = request.GET.get('type', '')
     house = request.GET.get('house', '')
     all_house_cctv = None
-
-    if house == 'all':
+    house_cctv = None
+    if house == 'out_all':
+        user = request.user
+        gcg = user.gcg_set.all()
         all_house_cctv = user.allhousecctv_set.all()
+        house_cctv = gcg[0].gcgcctv_set.filter(cctv_type = 'o')
+
+        for gcg_query in gcg:
+            before_house_cctv = gcg_query.gcgcctv_set.filter(cctv_type = 'o')
+            house_cctv = house_cctv.union(before_house_cctv)
+        # all_house_cctv 는 전체동( 한개농가 )의 외부 cctv의 부분
+        # house_cctv는 각 동의 실외 cctv
+    elif house == 'in_all':
+        user = request.user
+        gcg = user.gcg_set.all()
+        house_cctv = gcg[0].gcgcctv_set.filter(cctv_type = 'i')
+        for gcg_query in gcg:
+            before_house_cctv = gcg_query.gcgcctv_set.filter(cctv_type = 'i')
+            house_cctv = house_cctv.union(before_house_cctv)
     elif house:
         gcg = get_object_or_404(Gcg, id = house, user = user)
         snode = gcg.snode_set.all()
@@ -66,8 +82,9 @@ def control(request):
             gcg = get_object_or_404(Gcg, id=house, user=user)
             snode = gcg.snode_set.all()
             anode = gcg.anode_set.all()
+            gcg_cctv = gcg.gcgcctv_set.filter(cctv_type = 'i')
     # 현재 gcg 통신은 위의 request.get과 같이 처리 혹은 템플릿 자체에서도 가능할듯 함
-    return render(request, 'control_2/cctv_control.html', {
+    return render(request, 'control/cctv_control.html', {
         'user' : user,
         'gcg' : gcg,
         'snode' : snode,
@@ -75,6 +92,7 @@ def control(request):
         'gcg_cctv' : gcg_cctv,
         'cctv_exists' : cctv_exists,
         'all_house_cctv' : all_house_cctv,
+        'house_cctv' : house_cctv,
     })
 
 def control_log(request):

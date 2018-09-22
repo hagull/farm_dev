@@ -1,5 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from palm.models import Gcg, Anode
+import requests
 #import requests
 
 

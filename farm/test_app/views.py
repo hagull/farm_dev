@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.template import RequestContext, loader, Context
-
+from .protocol_processing import AP3_2
 def test_request(request):
     user = request.user
     test_gcg = None
@@ -24,4 +24,7 @@ def test_get(request):
     return render(request, 'test_app/test_get.html', {
         'value' : value,
     })
+def test_protocol(request):
+    ap3 = AP3_2('0x0101010101010101010111010120102013123514532454235234234')
+    return HttpResponse(ap3.version)
 # Create your views here.
