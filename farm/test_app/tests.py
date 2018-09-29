@@ -25,30 +25,20 @@ def main():
     response = requests.get(url = url1)
     protocol = response.text[9:-11]
     ap3_2 = AP3_2(protocol = protocol)
-    gcg_id = None
-    sw_ver = None
-    node_num = None
-    node_group = None
-    node_info = []
-    sensing_period_hour = None
-    sensing_period_min = None
-    sensing_period_sec = None
-    gcg_state = None
-    comm_error_num = None
-    service_error_num = None
-    etc = None
     split_protocol = {}
     if ap3_2.command_type == '01':
-        ap3_2_gcg = AP3_2_GCG(protocol = protocol)
-        if ap3_2_gcg.payload == '01':
-            split_protocol = ap3_2_gcg.gcg_info()
-        elif ap3_2_gcg.payload == '02':
-            split_protocol = ap3_2_gcg.gcg_response()
+        ap3_2 = AP3_2_GCG(protocol = protocol)
+        if ap3_2.payload == '01':
+            split_protocol = ap3_2.gcg_info()
+        elif ap3_2.payload == '02':
+            split_protocol = ap3_2.gcg_response()
     else:
         pass
-    return print('gcg_id = {}'.format(split_protocol)),\
+    return print('gcg_id = {}'.format(split_protocol['gcg_id'])),\
+            print('gcg_version = {}'.format(ap3_2.version)),\
+            print('gcg_sequence = {}'.format(ap3_2.sequence)),\
+            print(split_protocol),\
             print(protocol)
-
 main()
 
 

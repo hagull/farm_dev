@@ -22,7 +22,7 @@ class Gcg(models.Model):
         ('u', 'Unknown Error'),
     )
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT)
-    serial_num = models.IntegerField(default=0)
+    serial_num = models.CharField(default=0, max_length=100)
     node_num = models.IntegerField(default=0)
     node_group = models.IntegerField(default=0)
     # 이부분은 node_id가 들어갈 부분인데 gcg와 1:N관계로 있는 snode들의 그룹을 의미하므로 없어도 될 항복

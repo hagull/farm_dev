@@ -3,13 +3,14 @@ import struct
 
 # AP3-1 server => Gcg 통신 프로토콜 클래스 정의
 class AP3_1:
-    def __init__(self, command_type, gcg_id = 0, version = 1, frame_type = 0, security = 0, sequence_number = 0):
+    def __init__(self, command_type, gcg_id = '0', version = 1, frame_type = 0, security = 0, sequence_number = 0):
         self.frame_header = '0x'
         self.version = hex(version)[2:].rjust(2, '0')
         self.frame_type = hex(frame_type)[2:].rjust(2, '0')
         self.security = hex(security)[2:].rjust(2, '0')
         self.sequence = hex(sequence_number)[2:].rjust(4, '0')
-        self.gcg_id = hex(gcg_id)[2:].rjust(10, '0')
+        # self.gcg_id = hex(gcg_id)[2:].rjust(10, '0')
+        self.gcg_id = gcg_id.rjust(10, '0')
         self.command_type = hex(command_type)[2:].rjust(2, '0')
         self.frame_header = self.frame_header + self.version + self.frame_type + self.security + self.sequence + self.gcg_id + self.command_type
 # command type = 0x01
@@ -22,7 +23,7 @@ class AP3_1_GCG(AP3_1):
         value1 = hex(value1)[2:].rjust(2, '0')
         protocol = self.frame_header + payload_type + value1
         return protocol
-    # payload type 0x02이면 호출 - 온실통합제어기 설정요청에 대한 응답
+    # payload type 0x02이면 호출 - 온실통합제어기 정보수집주기 설정요청
     def gcg_request(self, payload_type = 2, value1 = 1, value2_hour = 0, value2_min = 0, value2_sec = 0):
         payload_type = hex(payload_type)[2:].rjust(2, '0')
         value1 = hex(value1)[2:].rjust(2, '0')
@@ -100,48 +101,67 @@ class AP3_2_GCG(AP3_2):
             sw_ver = self.value2[10:12]
             node_num = self.value2[12:14]
             node_num_dec = int(node_num, 16)
-            node_group_end = (node_num * 120) + 14
+            node_group_end = (120*32) + 14
             # node_num의 max = 32 min = 0
             node_group = self.value2[14:node_group_end]
             self.value2 = self.value2[node_group_end:]
             # node_group 는 node_num * 60byte의 크기를 가진다.
             # sever에서 node_group만 받아도 node_num 까지 처리가 가능
             # node_num = len(node_id)
-            node_id = []
-            for i in range(0, node_group + 60, 120):
-                node_id.append(node_group[i:i+120])
+            node_info = []
+            split_protocol = {}
+            # node_id 가 아니라 node_info이다. 이를 처리해주는것이 다시한번 필요
+            for i in range(0, node_group_end-14, 120):
+                node_info.append(node_group[i:i+120])
                 # 이 반복문에 의해 60byte의 크기 120개의 문자열을 가진 데이터들이 리스트에 저장이된다.
             sensing_period_hour = self.value2[:2]
             sensing_period_min = self.value2[2:4]
             sensing_period_sec = self.value2[4:6]
             gcg_state = self.value2[6:8]
             comm_error_num = self.value2[8:12]
-            service_error_num = self.value2[12:14]
-            etc = self.value2[14:]
+            service_error_num = self.value2[12:16]
+            etc = self.value2[16:]
+            split_protocol = {'gcg_id' : gcg_id,
+                              'sw_ver' : sw_ver,
+                              'node_num' : node_num,
+                              'node_group' : node_group,
+                              'node_info' : node_info,
+                              'sensing_period_hour' : sensing_period_hour,
+                              'sensing_period_min' : sensing_period_min,
+                              'sensing_period_sec' : sensing_period_sec,
+                              'gcg_state' : gcg_state,
+                              'comm_error_num' : comm_error_num,
+                              'service_error_num' : service_error_num,
+                              'etc' : etc}
             # 리턴하기 전에 gcg_id나 sw_ver는 모두 16진수의 형태이므로 이를 10진수 형태로 바꿔줄 작업이 필요하다.
-            return gcg_id, sw_ver, node_num, node_group, node_id, sensing_period_hour, sensing_period_min, sensing_period_sec, gcg_state, comm_error_num, service_error_num, etc
+            return split_protocol
         # value1 = 0x02
         elif self.value1 == '02':
             # 10개의 문자열 처리
             gcg_id = self.value2
-            gcg_id = int(gcg_id, 16)
-            return gcg_id
+            split_protocol = {'gcg_id': gcg_id}
+            return split_protocol
         # value1 = 0x03
         elif self.value1 == '03':
             # 2개의 문자열 처리
             sw_ver = self.value2
-            sw_ver = int(sw_ver, 16)
-            return sw_ver
+            split_protocol = {'sw_ver': sw_ver}
+            return split_protocol
         # value1 = 0x04
         elif self.value1 == '04':
             # 3842개의 문자열 처리
             node_num = self.value2[:2]
-            node_group_end = (node_num * 120) + 2
+            node_num_dec = int(node_num, 16)
+            node_group_end = (node_num_dec * 120) + 2
             node_group = self.value2[2:node_group_end]
-            node_id = []
-            for i in range(0, node_group_end, 120):
-                node_id.append(node_group[i:i+120])
-            return node_num, node_group, node_id
+            node_info = []
+            for i in range(0, node_group_end - 14, 120):
+                node_info.append(node_group[i:i+120])
+            split_protocol = {'node_num': node_num,
+                              'node_group': node_group,
+                              'node_info': node_info
+                              }
+            return split_protocol
         # value1 = 0x05
         elif self.value1 == '05':
             # 6개의 문자열 처리
@@ -149,22 +169,28 @@ class AP3_2_GCG(AP3_2):
             sensing_period_min = self.value2[2:4]
             sensing_period_sec = self.value2[4:6]
             # 이를 데이터타임 객체로 변환하여 리턴하는것이 좋을듯
-            return sensing_period_hour, sensing_period_min, sensing_period_sec
+            split_protocol = {'sensing_period_hour': sensing_period_hour,
+                              'sensing_period_min': sensing_period_min,
+                              'sensing_period_sec': sensing_period_sec}
+            return split_protocol
         # value1 = 0x06
         elif self.value1 == '06':
             # 2개의 문자열 처리
             gcg_state = self.value2
-            return gcg_state
+            split_protocol = {'gcg_state': gcg_state}
+            return split_protocol
         # value1 = 0x07
         elif self.value1 == '07':
             # 4개의 문자열 처리
             comm_error_num = self.value2
-            return comm_error_num
+            split_protocol = {'comm_error_num': comm_error_num}
+            return split_protocol
         # value1 = 0x08
         elif self.value1 == '08':
             # 4개의 문자열 처리
             service_error_num = self.value2
-            return service_error_num
+            split_protocol = {'service_error_num': service_error_num}
+            return split_protocol
         else:
             pass
     # payload type 0x02이면 호출 - 온실통합제어기 설정요청에 대한 응답
@@ -179,7 +205,9 @@ class AP3_2_GCG(AP3_2):
             period_edit_state = 'Error'
         else:
             pass
-        return period_edit, period_edit_state
+        split_protocol = {'period_edit' : period_edit,
+                          'period_edit_state' : period_edit_state}
+        return split_protocol
 # command type = 0x02
 class AP3_2_NODE(AP3_2):
     def __init__(self, protocol):
@@ -216,18 +244,6 @@ class AP3_2_READ_LOG(AP3_2):
     # 0x02
     def log_part(self):
         pass
-
-
-def main():
-    ap3_1 = AP3_1_GCG()
-    value = ap3_1.frame_header
-    value2 = ap3_1.gcg_info()
-    value3 = ap3_1.gcg_request()
-    print(value)
-    print(len(value))
-    print(value2)
-    print(value3)
-main()
 # AP3-2 - END
 
 
