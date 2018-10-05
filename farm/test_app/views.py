@@ -27,4 +27,16 @@ def test_get(request):
 def test_protocol(request):
     ap3 = AP3_2('0x0101010101010101010111010120102013123514532454235234234')
     return HttpResponse(ap3.version)
+def test_dict(request):
+    dict = {
+        '1node_id' : {
+            'id' : 1,
+            'serial':2,
+        },
+        '2node_id' : {
+            'id' : 2,
+            'serial' : 3,
+        },
+    }
+    return render(request, 'test_app/test_dict.html', dict)
 # Create your views here.

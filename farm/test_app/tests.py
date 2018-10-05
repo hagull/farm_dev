@@ -39,6 +39,10 @@ def main():
             print('gcg_sequence = {}'.format(ap3_2.sequence)),\
             print(split_protocol),\
             print(protocol)
-main()
+def main2():
+    url1 = 'http://211.205.5.125:2000/0x01000000000100000001010102'
+    response = requests.get(url=url1)
+    return print(response.text)
+main2()
 
 
