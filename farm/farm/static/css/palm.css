@@ -201,7 +201,7 @@ body {
     width: 100px;
     height: 50px;
     padding: 10px 0px;
-    margin-bottom: 5px;
+    margin: 0, 5px, 0, 5px;
   }
   .control-inner span {
     font-size: 20px;
