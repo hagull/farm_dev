@@ -1,1 +1,21 @@
 {% extends "layout.html" %}
+{% block content %}
+{% load palm_filters %}
+
+  <div class="control-nav">
+    <div class="control-inner" style="position:relative;">
+      <form action="" method="get" style="display:inline-block;">
+          {% if user.allhousecctv_set.all.exists %}
+          <button class="control-inner-primary" name = "house" value = "out_all"><span>실외</span></button>
+          {% endif %}
+          <button class="control-inner-primary" name = "house" value = "in_all"><span>실내</span></button>
+          {% for gcg in user.gcg_set.all %}
+          <button class="control-inner-primary" name = "house" value = "{{ gcg.id }}"><span>{{forloop.counter}} 동</span></button>
+          {% endfor %}
+          <a class="control-inner-primary" href="{% url 'palm:control_log' %}"><span>로그</span></a>
+      </form>
+    </div>
+  </div>
+  {% block control-content %}
+  {% endblock %}
+{% endblock %}

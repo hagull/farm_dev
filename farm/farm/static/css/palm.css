@@ -31,7 +31,7 @@ body {
   }
 }
 
-@media (max-width: 750px)   /* 모바일 화면 */
+@media (max-width: 749px)   /* 모바일 화면 */
 {
   .wrapper {
     grid-template-rows: 70px auto minmax(800px, auto) 50px;  /* header menu, content, footer 4가지 영역 */
@@ -76,16 +76,23 @@ body {
 /*------------- menu Css -------------*/
 .menu {
   display:block;
-
+  width: 100%;
 }
-
-@media (max-width: 750px)     /*모바일 화면 */
+.menu a {
+  box-sizing: border-box;
+  color: #337ab7;
+}
+.menu a:hover, a:visited, a:link, a:active{
+  color: #337ab7;
+}
+@media (max-width: 749px)     /*모바일 화면 */
 {
   .menu a {
-    width: 20%;
-    float: left;
     display: inline-block;
-    padding: 10px 0px;
+    float: left;
+    width: 20%;
+    padding: 4px 0;
+    margin: 0;
     font-size: 14px;
     text-align: center;
   }
@@ -100,29 +107,39 @@ body {
 @media (min-width: 750px)   /* 모바일 외에 */
 {
   .menu a {
-    width: 200px;
     display: block;
+    width: 200px;
     padding: 15px;
     font-size: 18px;
+    border-bottom: 1px solid #e7e7e7;
   }
 }
 
-.menu a {
-  box-sizing: border-box;
-  border-bottom: 1px solid #e7e7e7;
-  color: #337ab7;
-}
-.menu a:visited, a:link, a:active{
-  color: #337ab7;
-}
+
 
 
 /* --------------위까지 기본 Layout ----------------*/
 
 /*------------- CONTROL Css -------------*/
 .content {
-
+/*  height: auto;
+  overflow-y: auto;*/
 }
+.control-inner span {
+  color: white;
+}
+.control-inner a:active, a:hover, a:visited, a:linke{
+  color: white;
+  text-decoration: none;
+}
+.control-inner-primary {
+  background-color: #337ab7;
+  border: 1px solid #2e6da4;
+  border-radius: 5px;
+  text-align:center;
+  font-weight: 400;
+}
+
 .control-content {
   position: relative;
 }
@@ -141,11 +158,10 @@ body {
   border: 1px solid black;
   padding: 10px;
 }
-@media (max-width: 750px)     /*모바일 화면 */
+@media (max-width: 749px)     /*모바일 화면 */
 {
   .control-content {
     left: 15%;
-    top: 5%;
   }
   .control-nav {
     width: 15%;
@@ -153,17 +169,18 @@ body {
     display: inline-block;
     position:fixed;
   }
-  .control-inner button {
-    display: inline-block;
-    margin: 5px 0;
+  .control-inner button, a {
+    display: block;
+    width: 40px;
+    height: 25px;
+    margin: 5px;
+    padding: 0;
   }
-
   .control-content .cctv{
     width: 80%;
     height: 100px;
     margin-bottom : 5px;
   }
-
   .sensor-table th, td {
     font-size: 10px;
   }
@@ -171,23 +188,24 @@ body {
 @media (min-width: 750px)  /* 모바일 외에 */
 {
   .control-content {
-    top : 5%;
+    left: 20px;
   }
   .control-nav {
-    padding: 20px;
+    padding:20px;
     width: 100%;
     height: auto;
     border-bottom: 1px solid #e7e7e7;
   }
+  .control-inner button, a {
+    display: inline-block;
+    width: 100px;
+    height: 50px;
+    padding: 10px 0px;
+    margin-bottom: 5px;
+  }
   .control-inner span {
     font-size: 20px;
   }
-  .control-inner button {
-    width: 100px;
-    height: 50px;
-    margin-right: 15px;
-  }
-
   .control-content .cctv{
     width: 45%;
     height: 200px;
@@ -221,3 +239,33 @@ body {
   margin: 5px;
 }
 /*-------Palm PAGE------------*/
+
+
+
+
+/*------Control Log-----------*/
+.control-log {
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  padding: 20px;
+  margin: 0;
+}
+.control-log-header {
+  margin-bottom: 10px;
+  width:100%;
+  float: left;
+}
+.control-log-header .btn-retrieve {
+  background-color: #337ab7;
+  border: 1px solid #2e6da4;
+  border-radius: 5px;
+  color: white;
+  text-align:center;
+  font-size: 18px;
+  float:right;
+}
+.control-log-body {
+  clear: both;
+}
+/*------Control Log-----------*/

@@ -113,7 +113,7 @@ def control_log(request):
         for anode_query in anode:
             anode_log = anode_query.anodelog_set.all()
             combined_anode_log = combined_anode_log.union(anode_log)
-    combined_anode_log.orderby('-created_at')
+    combined_anode_log.order_by('-created_at')
     return render(request, 'control/control_log.html', {
         'user' : user,
         'gcg' : gcg,
