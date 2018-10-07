@@ -1,43 +1,11 @@
 {% extends "control/layout.html" %}
 
-{% block content %}
+{% block control-content %}
 {% load palm_filters %}
 
-<div class="control-nav">
-  <div class="control-inner" style="position:relative; ">
-    <form action="" method="get">
-        {% if user.allhousecctv_set.all.exists %}
-        <button class="btn btn-primary" name = "house" value = "out_all"><span>실외</span></button>
-        {% endif %}
-        <button class="btn btn-primary" name = "house" value = "in_all"><span>실내</span></button>
-        {% for gcg in user.gcg_set.all %}
-        <button class="btn btn-primary" name = "house" value = "{{ gcg.id }}"><span>{{forloop.counter}} 동</span></button>
-        {% endfor %}
-    </form>
-  </div>
-</div>
-    {% if house_cctv %}
-    {% else %}
-{# 각 동의 실외 실내 CCTV 출력을 위한 form태그 #}
-<h3>{{gcg}}</h3>
-        {% if cctv_exists %}
-<div class="control-nav">
-  <div class="control-inner" style="position:relative; ">
-    <form action="" method="get" class = "btn btn-group" role="group">
-        <input type="hidden" name = "house" value = "{{gcg.id}}">
-        <input type="hidden" name = "type" value = "o">
-        <input type = "submit" value = "실외" class = "btn btn-primary">
-        </form>
-        {% endif %}
-        <form action="" method="get" class = "btn btn-group" role="group">
-        <input type="hidden" name = "house" value = "{{gcg.id}}">
-        <input type="hidden" name = "type" value = "i">
-        <input type = "submit" value = "실내" class = "btn btn-primary">
-            </form>
-    </div>
-</div>
-    {% endif %}
+
 <div class="control-content">
+  <h1>CCTV</h1>
   {% if house_cctv %}
     {% if all_house_cctv %}
     <h3>농가 전체 실외 CCTV</h3>
@@ -77,8 +45,6 @@
           <!--
           {{temp_snode.0}}
           {{humd_snode.0}}-->
-          {# 이후 sensor value 를 받는 테스트를 할때 같이 진행 #}
-          {# 위와같이 temp_snode.0 과 같은 방식이 아닌 센서값의 평균을 구하는 것이므로 template tag 함수정의로 해결 #}
           <td>37</td>
           <td>66%</td>
           <td>33%</td>
