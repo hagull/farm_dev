@@ -219,12 +219,13 @@ def anode_detail(request, gcg_serial, value1, value2):
     user = request.user
     gcg = get_object_or_404(Gcg, user=user, serial_num=gcg_serial)
     value3 = ['8000000001']
+    value3 = value3[0]
     # anode아직 1개이기 때문에 하드코딩 방식 채택 / 이후 실제 유저모델에선 snode 와 같은 코딩방식사용
     # snode_id 의 리스트집합
     user_ip = user.profile.ip_address
     user_port = user.profile.ip_port
     ap3_1 = AP3_1_NODE(gcg_id=gcg_serial, version=1, frame_type=0, security=0, sequence_number=1)
-    request_protocol = ap3_1.snode_info(value1=value1, value2=value2, value3=value3)
+    request_protocol = ap3_1.anode_info(value1=value1, value2=value2, value3=value3)
     url = 'http://{}:{}/{}'.format(user_ip, user_port, request_protocol)
     response = requests.get(url=url)
     response_protocol = response.text[9:-11]
