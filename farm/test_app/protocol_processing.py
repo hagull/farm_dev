@@ -35,7 +35,7 @@ class AP3_1_GCG(AP3_1):
         return protocol
 # command type = 0x02
 class AP3_1_NODE(AP3_1):
-    def __init__(self, command_type = 2, gcg_id ='0', version=1, frame_type=0, security=0, sequence_number=0):
+    def __init__(self, command_type = 2, gcg_id = 0, version=1, frame_type=0, security=0, sequence_number=0):
         super().__init__(command_type, gcg_id, version, frame_type, security, sequence_number)
     # payload type 0x01 이면 호출 - 센서노드의 정보 데이터 전송
     def snode_info(self, payload_type = 1, value1 = 0, value2 = 0, value3 = '0'):
@@ -427,9 +427,17 @@ class AP3_2_NODE(AP3_2):
             for key in node_id:
                 split_info_before = node_info[j]
                 node_value_before = split_info_before
-                node_value = []
+                node_value_str = []
                 for i in range(0, 80, 8):
-                    node_value.append(node_value_before[i:i+8])
+                    node_value_str.append(node_value_before[i:i+8])
+                node_value = []
+                for value in node_value_str:
+                    step1 = [int(value[6:8], 16), int(value[4:6], 16), int(value[2:4], 16), int(value[:2], 16)]
+                    step2 = bytes(step1)
+                    step3 = struct.unpack('>f', step2)
+                    step4 = step3[0]
+                    step5 = round(step4, 3)
+                    node_value.append(step5)
                 split_protocol[key] = {'node_value': node_value}
                 j += 1
             return split_protocol
@@ -665,6 +673,8 @@ class AP3_2_NODE(AP3_2):
                 node_value = []
                 for i in range(0, 20, 2):
                     node_value.append(node_value_before[i:i+2])
+                # node_value 를 저장하기전에 자료형을 str -> float 형식으로 바꿔주어야하라 필요가 있음
+                # 현재 node_value_str는 문자열을 담은 10개의 리스트
                 split_protocol[key] = {'node_value': node_value}
                 j += 1
             return split_protocol

@@ -164,7 +164,6 @@ class Anode(models.Model):
     operating_mode = models.CharField(max_length=1, choices=OPERATING_TYPE, blank=True)
     comm_error_num = models.IntegerField(default=0)
     service_error_num = models.IntegerField(default=0)
-
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     def __str__(self):

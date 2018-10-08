@@ -62,11 +62,11 @@ def main3():
     cmd_type = '02'
     payload_type = '01'
     # 01/03/04
-    value1 = '05'
+    value1 = '07'
     # value1 01 ~ 09
     # 02 03 사이에서 뭔가 이상한데
     # 오류 - 프로토콜의 value1 값은 변하고 변한 프로토콜을 전송하는데 이전에 전송했던 값이 출력됨
-    value2 = '08'
+    value2 = '06'
     value3 = ''
     value3 = value3.join(snode_id)
     cmd2_pay1_url = IP + '0x' + ver + frametype + security + sequence + gcg_id + cmd_type + payload_type + value1 + value2 + value3
@@ -195,5 +195,5 @@ def main6():
             print(response_protocol), \
             print(split_protocol), \
             print(ap3_2.payload)
-main6()
+main3()
 # 현재 gcg 1에 연결되어 있는 node의 serial num
