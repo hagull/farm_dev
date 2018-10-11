@@ -3,6 +3,7 @@ from .models import Gcg, Anode, Snode, AnodeLog
 import requests
 from data.protocol_processing import *
 from accounts.models import User
+from django.http import HttpResponse
 
 def base(request):
     return render(request, 'palm/base.html', {})
@@ -128,6 +129,9 @@ def record(request):
 def past_record(request):
     pass
 
+
+# test page
+# gcg
 def gcg_page(request):
     user = request.user
     gcg = user.gcg_set.all()
@@ -169,4 +173,101 @@ def gcg_detail(request, gcg_serial):
         pass
     split_protocol['url'] = url
     return render(request, 'settings/gcg_detail.html', split_protocol)
+
+# snode test page
+def snode_page(request):
+
+    user = request.user
+    gcg = user.gcg_set.all()
+    return render(request, 'settings/snode_page.html', {
+        'gcg': gcg,
+    })
+def snode_detail(request, gcg_serial, value1, value2):
+    user = request.user
+    gcg = get_object_or_404(Gcg, user=user, serial_num=gcg_serial)
+    snode = gcg.snode_set.filter(snode_type = 't')
+    serial_num = []
+    # snode_id 의 리스트집합
+    for i in snode:
+        serial_num.append(i.serial_num)
+    value3 = ''.join(serial_num)
+    user_ip = user.profile.ip_address
+    user_port = user.profile.ip_port
+    ap3_1 = AP3_1_NODE(gcg_id=gcg_serial, version=1, frame_type=0, security=0, sequence_number=1)
+    request_protocol = ap3_1.snode_info(value1=value1, value2 = value2, value3 = value3)
+    url = 'http://{}:{}/{}'.format(user_ip, user_port, request_protocol)
+    response = requests.get(url=url)
+    response_protocol = response.text[9:-11]
+    ap3_2 = AP3_2(protocol=response_protocol)
+    split_protocol = {}
+    if ap3_2.command_type == '02':
+        ap3_2 = AP3_2_NODE(protocol=response_protocol)
+        if ap3_2.payload == '01':
+            split_protocol = ap3_2.snode_info()
+        elif ap3_2.payload == '03':
+            split_protocol = ap3_2.anode_info()
+        elif ap3_2.payload == '04':
+            split_protocol = ap3_2.anode_response()
+        else:
+            pass
+    split_protocol['url'] = url
+    return HttpResponse('{}'.format(split_protocol))
+    # return render(request, 'settings/gcg_detail.html', split_protocol)
+    # 이후 일반페이지에서는 랜더링 방식으로 함
+
+def anode_detail(request, gcg_serial, value1, value2):
+    user = request.user
+    gcg = get_object_or_404(Gcg, user=user, serial_num=gcg_serial)
+    value3 = ['8000000001']
+    value3 = value3[0]
+    # anode아직 1개이기 때문에 하드코딩 방식 채택 / 이후 실제 유저모델에선 snode 와 같은 코딩방식사용
+    # snode_id 의 리스트집합
+    user_ip = user.profile.ip_address
+    user_port = user.profile.ip_port
+    ap3_1 = AP3_1_NODE(gcg_id=gcg_serial, version=1, frame_type=0, security=0, sequence_number=1)
+    request_protocol = ap3_1.anode_info(value1=value1, value2=value2, value3=value3)
+    url = 'http://{}:{}/{}'.format(user_ip, user_port, request_protocol)
+    response = requests.get(url=url)
+    response_protocol = response.text[9:-11]
+    ap3_2 = AP3_2(protocol=response_protocol)
+    split_protocol = {}
+    if ap3_2.command_type == '02':
+        ap3_2 = AP3_2_NODE(protocol=response_protocol)
+        if ap3_2.payload == '01':
+            split_protocol = ap3_2.snode_info()
+        elif ap3_2.payload == '03':
+            split_protocol = ap3_2.anode_info()
+        elif ap3_2.payload == '04':
+            split_protocol = ap3_2.anode_response()
+        else:
+            pass
+    split_protocol['url'] = url
+    return HttpResponse('{}'.format(split_protocol))
+def anode_control(request, gcg_serial, anode_serial, value2, value3, value4):
+    user = request.user
+    gcg = get_object_or_404(Gcg, user=user, serial_num=gcg_serial)
+    value1 = anode_serial
+    # anode아직 1개이기 때문에 하드코딩 방식 채택 / 이후 실제 유저모델에선 snode 와 같은 코딩방식사용
+    # snode_id 의 리스트집합
+    user_ip = user.profile.ip_address
+    user_port = user.profile.ip_port
+    ap3_1 = AP3_1_NODE(gcg_id=gcg_serial, version=1, frame_type=0, security=0, sequence_number=1)
+    request_protocol = ap3_1.anode_request(value1=value1, value2=value2, value3=value3, value4 = value4)
+    url = 'http://{}:{}/{}'.format(user_ip, user_port, request_protocol)
+    response = requests.get(url=url)
+    response_protocol = response.text[9:-11]
+    ap3_2 = AP3_2(protocol=response_protocol)
+    split_protocol = {}
+    if ap3_2.command_type == '02':
+        ap3_2 = AP3_2_NODE(protocol=response_protocol)
+        if ap3_2.payload == '01':
+            split_protocol = ap3_2.snode_info()
+        elif ap3_2.payload == '03':
+            split_protocol = ap3_2.anode_info()
+        elif ap3_2.payload == '04':
+            split_protocol = ap3_2.anode_response()
+        else:
+            pass
+    split_protocol['url'] = url
+    return HttpResponse('{}'.format(split_protocol))
 # Create your views here.

@@ -18,7 +18,7 @@ import requests
     # args = user / get params = > type / house 등의 정보들을 보낸다.
 # Create your views here.
 # Create your tests here.
-def main():
+def main1():
 
     url1 = 'http://211.205.5.125:2000/0x01000000000100000001010101'
     url2 = 'http://211.205.5.125:2000/0x01000000000100000001010201000200'
@@ -34,15 +34,166 @@ def main():
             split_protocol = ap3_2.gcg_response()
     else:
         pass
+    node_id = []
+    for a in split_protocol['node_info']:
+        node_id.append(a[:10])
     return print('gcg_id = {}'.format(split_protocol['gcg_id'])),\
             print('gcg_version = {}'.format(ap3_2.version)),\
             print('gcg_sequence = {}'.format(ap3_2.sequence)),\
             print(split_protocol),\
-            print(protocol)
+            print(protocol),\
+            print('node_info = {}'.format(split_protocol['node_info'])),\
+            print('node_id = {}'.format(node_id))
 def main2():
     url1 = 'http://211.205.5.125:2000/0x01000000000100000001010102'
     response = requests.get(url=url1)
     return print(response.text)
-main2()
-
-
+# payload 01 test
+def main3():
+    snode_id = ['4200000001', '4200000002', '4200000003', '4200000004', '4200000005', '4200000006', '4200000007',
+               '4200000008']
+    anode_id = ['8000000001']
+    IP = 'http://211.205.5.125:2000/'
+    ver = '01'
+    frametype = '00'
+    security = '00'
+    sequence = '0000'
+    gcg_id = '0100000001'
+    cmd_type = '02'
+    payload_type = '01'
+    # 01/03/04
+    value1 = '07'
+    # value1 01 ~ 09
+    # 02 03 사이에서 뭔가 이상한데
+    # 오류 - 프로토콜의 value1 값은 변하고 변한 프로토콜을 전송하는데 이전에 전송했던 값이 출력됨
+    value2 = '06'
+    value3 = ''
+    value3 = value3.join(snode_id)
+    cmd2_pay1_url = IP + '0x' + ver + frametype + security + sequence + gcg_id + cmd_type + payload_type + value1 + value2 + value3
+    response = requests.get(url = cmd2_pay1_url)
+    protocol = response.text[9:-11]
+    ap3_2 = AP3_2(protocol = protocol)
+    split_protocol = {}
+    if ap3_2.command_type == '02':
+        ap3_2 = AP3_2_NODE(protocol = protocol)
+        if ap3_2.payload == '01':
+            split_protocol = ap3_2.snode_info()
+        else:
+            pass
+    return print(cmd2_pay1_url), \
+            print(protocol), \
+            print(split_protocol),\
+            print(ap3_2.payload)
+# payload 03 Test
+def main4():
+    anode_id = ['8000000001']
+    IP = 'http://211.205.5.125:2000/'
+    ver = '01'
+    frametype = '00'
+    security = '00'
+    sequence = '0000'
+    gcg_id = '0100000001'
+    cmd_type = '02'
+    payload_type = '03'
+    # 01/03/04
+    value1 = '01'
+    value2 = '01'
+    value3 = ''
+    value3 = value3.join(anode_id)
+    cmd2_pay1_url = IP + '0x' + ver + frametype + security + sequence + gcg_id + cmd_type + payload_type + value1 + value2 + value3
+    response = requests.get(url=cmd2_pay1_url)
+    protocol = response.text[9:-11]
+    ap3_2 = AP3_2(protocol=protocol)
+    split_protocol = {}
+    if ap3_2.command_type == '02':
+        ap3_2 = AP3_2_NODE(protocol=protocol)
+        if ap3_2.payload == '01':
+            split_protocol = ap3_2.snode_info()
+        elif ap3_2.payload == '03':
+            split_protocol = ap3_2.anode_info()
+    return print(cmd2_pay1_url), \
+           print(protocol), \
+           print(split_protocol), \
+           print(ap3_2.payload)
+# payload type 0x04 Test
+def main5():
+    anode_id = ['8000000001']
+    IP = 'http://211.205.5.125:2000/'
+    ver = '01'
+    frametype = '00'
+    security = '00'
+    sequence = '0000'
+    gcg_id = '0100000001'
+    cmd_type = '02'
+    payload_type = '04'
+    # 01/03/04
+    value1 = anode_id[0]
+    # value1 01 ~ 09
+    # 02 03 사이에서 뭔가 이상한데
+    # 오류 - 프로토콜의 value1 값은 변하고 변한 프로토콜을 전송하는데 이전에 전송했던 값이 출력됨
+    value2 = '00'
+    value3 = '01'
+    value4 = '00'
+    cmd2_pay1_url = IP + '0x' + ver + frametype + security + sequence + gcg_id + cmd_type + payload_type + value1 + value2 + value3 + value4
+    response = requests.get(url=cmd2_pay1_url)
+    protocol = response.text[9:-11]
+    ap3_2 = AP3_2(protocol=protocol)
+    split_protocol = {}
+    if ap3_2.command_type == '02':
+        ap3_2 = AP3_2_NODE(protocol=protocol)
+        if ap3_2.payload == '01':
+            split_protocol = ap3_2.snode_info()
+        elif ap3_2.payload == '03':
+            split_protocol = ap3_2.anode_info()
+        elif ap3_2.payload == '04':
+            split_protocol = ap3_2.anode_response()
+        else:
+            pass
+    return print(cmd2_pay1_url), \
+           print(protocol), \
+           print(split_protocol), \
+           print(ap3_2.payload)
+# ap3_1과 같이 진행 payload 01 03 04
+def main6():
+    snode_id = ['4200000001', '4200000002', '4200000003', '4200000004', '4200000005', '4200000006', '4200000007',
+                '4200000008']
+    IP = 'http://211.205.5.125:2000/'
+    ver = '01'
+    frametype = '00'
+    security = '00'
+    sequence = '0000'
+    gcg_id = '0100000001'
+    cmd_type = '02'
+    payload_type = '01'
+    # 01/03/04
+    value1 = 1
+    # value1 01 ~ 09
+    # 02 03 사이에서 뭔가 이상한데
+    # 오류 - 프로토콜의 value1 값은 변하고 변한 프로토콜을 전송하는데 이전에 전송했던 값이 출력됨
+    value2 = 8
+    value3 = ''
+    value3 = value3.join(snode_id)
+    ap3_1 = AP3_1_NODE(gcg_id = gcg_id)
+    request_protocol = ap3_1.snode_info(payload_type = 1, value1 = value1, value2 = value2, value3 = value3)
+    cmd2_pay1_url = IP + request_protocol
+    response = requests.get(url=cmd2_pay1_url)
+    response_protocol = response.text[9:-11]
+    ap3_2 = AP3_2(protocol=response_protocol)
+    split_protocol = {}
+    if ap3_2.command_type == '02':
+        ap3_2 = AP3_2_NODE(protocol=response_protocol)
+        if ap3_2.payload == '01':
+            split_protocol = ap3_2.snode_info()
+        elif ap3_2.payload == '03':
+            split_protocol = ap3_2.anode_info()
+        elif ap3_2.payload == '04':
+            split_protocol = ap3_2.anode_response()
+        else:
+            pass
+    return print(request_protocol),\
+            print(cmd2_pay1_url), \
+            print(response_protocol), \
+            print(split_protocol), \
+            print(ap3_2.payload)
+main3()
+# 현재 gcg 1에 연결되어 있는 node의 serial num

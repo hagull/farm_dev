@@ -1,0 +1,43 @@
+{% extends "settings/layout.html" %}
+{% block content %}
+<p></p>
+{% for gcg in gcg %}
+<h1>{{gcg.serial_num}} 통합제어기 노드</h1>
+{# value1 value2 value3 을 넘겨준다 #}
+<a href="{% url "palm:snode_detail" gcg.serial_num 1 8 %}" class = "btn btn-primary" >통합제어기 {{gcg.serial_num}}에 연결된 전체 센서노드 정보 요청</a>
+<a href="{% url "palm:anode_detail" gcg.serial_num 1 1 %}" class = "btn btn-primary">통합제어기 {{gcg.serial_num}}에 연결된 전체 제어노드 정보 요청</a>
+<p></p>
+<p></p>
+{% for anode in gcg.anode_set.all %}
+<a href="{% url "palm:anode_control" gcg.serial_num anode.serial_num 1 1 0 %}" class = "btn btn-primary">{{anode.serial_num}} 제어노드 Actuator 전체 On</a>
+<a href="{% url "palm:anode_control" gcg.serial_num anode.serial_num 0 1 0 %}" class = "btn btn-primary">{{anode.serial_num}} 제어노드 Actuator 전체 Off</a>
+<p></p>
+<a href="{% url "palm:anode_control" gcg.serial_num anode.serial_num 1 2 0 %}" class = "btn btn-primary">{{anode.serial_num}} 제어노드 Actuator 1 On</a>
+<a href="{% url "palm:anode_control" gcg.serial_num anode.serial_num 0 2 0 %}" class = "btn btn-primary">{{anode.serial_num}} 제어노드 Actuator 1 Off</a>
+<p></p>
+<a href="{% url "palm:anode_control" gcg.serial_num anode.serial_num 1 2 1 %}" class = "btn btn-primary">{{anode.serial_num}} 제어노드 Actuator 2 On</a>
+<a href="{% url "palm:anode_control" gcg.serial_num anode.serial_num 0 2 1 %}" class = "btn btn-primary">{{anode.serial_num}} 제어노드 Actuator 2 Off</a>
+<p></p>
+<a href="{% url "palm:anode_control" gcg.serial_num anode.serial_num 1 2 2 %}" class = "btn btn-primary">{{anode.serial_num}} 제어노드 Actuator 3 On</a>
+<a href="{% url "palm:anode_control" gcg.serial_num anode.serial_num 0 2 2 %}" class = "btn btn-primary">{{anode.serial_num}} 제어노드 Actuator 3 Off</a>
+<p></p>
+<a href="{% url "palm:anode_control" gcg.serial_num anode.serial_num 1 2 3 %}" class = "btn btn-primary">{{anode.serial_num}} 제어노드 Actuator 4 On</a>
+<a href="{% url "palm:anode_control" gcg.serial_num anode.serial_num 0 2 3 %}" class = "btn btn-primary">{{anode.serial_num}} 제어노드 Actuator 4 Off</a>
+<p></p>
+<a href="{% url "palm:anode_control" gcg.serial_num anode.serial_num 1 2 4 %}" class = "btn btn-primary">{{anode.serial_num}} 제어노드 Actuator 5 On</a>
+<a href="{% url "palm:anode_control" gcg.serial_num anode.serial_num 0 2 4 %}" class = "btn btn-primary">{{anode.serial_num}} 제어노드 Actuator 5 Off</a>
+<p></p>
+<a href="{% url "palm:anode_control" gcg.serial_num anode.serial_num 1 2 5 %}" class = "btn btn-primary">{{anode.serial_num}} 제어노드 Actuator 6 On</a>
+<a href="{% url "palm:anode_control" gcg.serial_num anode.serial_num 0 2 5 %}" class = "btn btn-primary">{{anode.serial_num}} 제어노드 Actuator 6 Off</a>
+<p></p>
+<a href="{% url "palm:anode_control" gcg.serial_num anode.serial_num 1 2 6 %}" class = "btn btn-primary">{{anode.serial_num}} 제어노드 Actuator 7 On</a>
+<a href="{% url "palm:anode_control" gcg.serial_num anode.serial_num 0 2 6 %}" class = "btn btn-primary">{{anode.serial_num}} 제어노드 Actuator 7 Off</a>
+<p></p>
+<a href="{% url "palm:anode_control" gcg.serial_num anode.serial_num 1 2 7 %}" class = "btn btn-primary">{{anode.serial_num}} 제어노드 Actuator 8 On</a>
+<a href="{% url "palm:anode_control" gcg.serial_num anode.serial_num 0 2 7 %}" class = "btn btn-primary">{{anode.serial_num}} 제어노드 Actuator 8 Off</a>
+<hr>
+{% endfor %}
+
+{% endfor %}
+
+{% endblock %}
