@@ -1,19 +1,14 @@
 body {
-  width: 100%;
-  height: 100%;
-  padding: 0;
-  margin: 0;
-  overflow-x:hidden;
-  overflow-y:scroll;
+  background-color: #f8f8f8;
 }
 
 .wrapper {
   width: 100%;
+  box-sizing: border-box;
   display: grid;
   grid-template-columns: repeat(12, 1fr);
-  grid-template-rows: 70px minmax(700px, auto) 50px;  /* header (menu, content) footer 3가지 영역 크기 */
-
 }
+
 
 .header{
   grid-column: span 12;
@@ -21,46 +16,54 @@ body {
 .footer{
   grid-column: span 12;
 }
-.menu {
-  grid-column: span 1;
-}
-.content {
-  grid-column: span 11;
-  grid-template-rows: minmax(700px, auto);
+
+@media (min-width: 750px)   /* 모바일 외에 */
+{
+  .wrapper {
+    grid-template-rows: 70px minmax(800px, auto) 50px;  /* header (menu, content) footer 3가지 영역 크기 */
+  }
+  .menu {
+    grid-column: span 1;
+  }
+  .content {
+    grid-column: span 11;
+    grid-template-rows: minmax(700px, auto);
+  }
 }
 
 @media (max-width: 749px)   /* 모바일 화면 */
 {
   .wrapper {
-    grid-template-rows: 70px auto minmax(1000px, auto) 50px;  /* header menu, content, footer 4가지 영역 */
+    grid-template-rows: 70px auto minmax(800px, auto) 50px;  /* header menu, content, footer 4가지 영역 */
   }
   .menu {
+    width: 375px;
     grid-column: span 12;
   }
   .content {
     grid-column: span 12;
-    grid-template-rows: minmax(600px, auto);
+    grid-template-rows: minmax(700px, auto);
   }
 }
 
-/*----- border -------------------*/
-.header, .footer {}
-.content { border: 1px solid #e7e7e7; }
+
+
+
+.header, .content{
+  border: 1px solid #e7e7e7;
+}
 .menu {
+  border-right: 1px solid #e7e7e7;
+}
+.footer{
   border-top: 1px solid #e7e7e7;
-  border-bottom: 1px solid #e7e7e7;
 }
-@media (max-width: 749px)     /*모바일 화면 */
-{
-  .content {
-    border: none;
-    border-bottom: 1px solid #e7e7e7;
-  }
-}
-
 /* header css */
+
+
 .header a {
   display: block;
+  box-sizing: border-box;
   padding: 15px 15px;
   font-size: 25px;
   color: #928e8e;
@@ -69,21 +72,15 @@ body {
   color: #928e8e;
 }
 
+
 /*------------- menu Css -------------*/
 .menu {
+  display:block;
   width: 100%;
 }
 .menu a {
-  display: block;
   box-sizing: border-box;
   color: #337ab7;
-  font-size: 18px;
-  width: 200px;
-  padding: 15px;
-  margin: 0;
-}
-.menu-divider {
-  border-bottom: 1px solid #e7e7e7;
 }
 .menu a:hover, a:visited, a:link, a:active{
   color: #337ab7;
@@ -93,106 +90,91 @@ body {
   .menu a {
     display: inline-block;
     float: left;
-    font-size: 14px;
-    text-align: center;
     width: 20%;
     padding: 4px 0;
+    margin: 0;
+    font-size: 14px;
+    text-align: center;
   }
   .menu i {
     display: none;
   }
-  .menu-divider {
-    margin: 0;
-    border-bottom:none;
+  .menu .menu-divider {
     border-right: 1px solid #e7e7e7;
+    magin: 0;
+  }
+}
+@media (min-width: 750px)   /* 모바일 외에 */
+{
+  .menu a {
+    display: block;
+    width: 200px;
+    padding: 15px;
+    font-size: 18px;
+    border-bottom: 1px solid #e7e7e7;
   }
 }
 
 
+
+
 /* --------------위까지 기본 Layout ----------------*/
 
-/*------------- CONTROL NavBar -------------*/
+/*------------- CONTROL Css -------------*/
 .content {
-
-}
-.control-nav {
-  width: 100%;
-  height: auto;
-  padding: 10px 20px;
-  border-bottom: 1px solid #e7e7e7;
-}
-.control-inner{
-  display: table;
-  border-collapse: separate;
-  border-spacing: 10px;
-}
-.control-inner a {
-  display: table-cell;
-  text-align:center;
-  vertical-align: middle;
-  padding: 0;
-  width: 100px;
-  height: 50px;
-}
-.control-inner a:hover, a:visited, a:link, a:active{
-  text-decoration: none;
+/*  height: auto;
+  overflow-y: auto;*/
 }
 .control-inner span {
-  font-size: 20px;
   color: white;
+}
+.control-inner a:active, a:hover, a:visited, a:linke{
+  color: white;
+  text-decoration: none;
 }
 .control-inner-primary {
   background-color: #337ab7;
   border: 1px solid #2e6da4;
   border-radius: 5px;
+  text-align:center;
   font-weight: 400;
 }
 
-@media (max-width: 749px)     /*모바일 화면 */
-{
-  .mobile-nav{
-    display:block;
-    position: fixed;
-    top: 80%;
-    left: 15px;
-    background-color: #ccc;
-    width: 50px;
-    height:50px;
-  }
-  .control-nav{
-    position: relative;
-    display:block;
-    padding: 0px;
-    text-align: center;
-    background-color: rgba(99, 99, 99, 0.5);
-    z-index: 1000;
-  }
-  .control-inner {
-    display:block;
-    position:absolute;
-  }
-  .control-inner a {
-
-    display: inline-block;
-    width: 100px;
-    padding: 0px;
-    margin: 5px;
-  }
-  .control-inner span{
-    font-size: 17px;
-  }
-}
-
-/*--------Control Page Content-------------*/
 .control-content {
   position: relative;
-  z-index: 1001;
-  left: 20px;
+}
+.control-content .cctv{
+  box-sizing: border-box;
+  border: 1px solid black;
+}
+
+.sensor-table{
+  border: 1px solid #777;
+}
+.sensor-table th, td {
+  width: auto;
+  height: 40px;
+  text-align: center;
+  border: 1px solid black;
+  padding: 10px;
 }
 @media (max-width: 749px)     /*모바일 화면 */
 {
   .control-content {
     left: 15%;
+  }
+  .control-nav {
+    width: 15%;
+    margin: 0px;
+    display: inline-block;
+    position:fixed;
+  }
+  .control-inner button, a {
+    display: block;
+    width: 40px;
+    height: 25px;
+    margin: 5px;
+    padding: 0;
   }
   .control-content .cctv{
     width: 80%;
@@ -202,26 +184,28 @@ body {
   .sensor-table th, td {
     font-size: 10px;
   }
-  .control-content {
-    position: relative;
-  }
-  .control-content .cctv{
-    box-sizing: border-box;
-    border: 1px solid black;
-  }
-
-  .sensor-table{
-    border: 1px solid #777;
-  }
-  .sensor-table th, td {
-    width: auto;
-    height: 40px;
-    text-align: center;
-    border: 1px solid black;
-    padding: 10px;
 }
 @media (min-width: 750px)  /* 모바일 외에 */
 {
+  .control-content {
+    left: 20px;
+  }
+  .control-nav {
+    padding:20px;
+    width: 100%;
+    height: auto;
+    border-bottom: 1px solid #e7e7e7;
+  }
+  .control-inner button, a {
+    display: inline-block;
+    width: 100px;
+    height: 50px;
+    padding: 10px 0px;
+    margin: 0, 5px, 0, 5px;
+  }
+  .control-inner span {
+    font-size: 20px;
+  }
   .control-content .cctv{
     width: 45%;
     height: 200px;
