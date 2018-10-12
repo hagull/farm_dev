@@ -271,3 +271,42 @@ def anode_control(request, gcg_serial, anode_serial, value2, value3, value4):
     split_protocol['url'] = url
     return HttpResponse('{}'.format(split_protocol))
 # Create your views here.
+
+
+
+
+
+def gcg_detail_2(request, gcg_serial):
+    user = request.user
+    gcg = get_object_or_404(Gcg, user = user, serial_num = gcg_serial)
+    user_ip = user.profile.ip_address
+    user_port = user.profile.ip_port
+    ap3_1 = AP3_1_GCG(gcg_id = gcg_serial, version = 1, frame_type = 0, security = 0, sequence_number = 1)
+    protocol = ap3_1.gcg_info(value1=1)
+    url = 'http://{}:{}/{}'.format(user_ip, user_port, protocol)
+    response = requests.get(url=url)
+    protocol = response.text[9:-11]
+    ap3_2 = AP3_2(protocol=protocol)
+    gcg_id = None
+    sw_ver = None
+    node_num = None
+    node_group = None
+    node_info = []
+    sensing_period_hour = None
+    sensing_period_min = None
+    sensing_period_sec = None
+    gcg_state = None
+    comm_error_num = None
+    service_error_num = None
+    etc = None
+    split_protocol = {}
+    if ap3_2.command_type == '01':
+        ap3_2 = AP3_2_GCG(protocol=protocol)
+        if ap3_2.payload == '01':
+            split_protocol = ap3_2.gcg_info()
+        elif ap3_2.payload == '02':
+            split_protocol = ap3_2.gcg_response()
+    else:
+        pass
+    split_protocol['url'] = url
+    return render(request, 'settings/gcg_detail_2.html', split_protocol)

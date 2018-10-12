@@ -89,7 +89,46 @@ class AP3_1_READ_LOG(AP3_1):
 
 # AP3-1 - END
 
+def nodeInfoConverter(value):
 
+    snode_type = {
+        '40' : '온도', '41' : '습도', '42' : '온습도', '43':'일사량',
+        '44' : '풍속', '45' : '풍향', '46' : '강우', '47' : '지온',
+        '48' : '지습', '49' : 'pH', '4A' : 'EC',
+    }
+    anode_type = {
+        '80' : '개폐기', '81' : '환기팬', '82' : '관수모터', '83' : '양액공급기',
+        '84' : '광 조절 장치', '85':'CO2 조절 장치', '86':'제습기', '87':'가습기',
+        '88' : '밸브 장치',
+    }
+    if value[0] == '4':        #센서 노드
+        node_id = value[0:10]
+        node_type = snode_type[value[0:2]]
+        sw_ver = value[10:12]
+        register_id = value[12:14]
+        register_date = value[14:28]
+        node_state = value[28:30]
+        monitor_mode = value[30:32]
+        sensor_value = value[32:112]
+        comm_error_num = value[112:116]
+        service_error_num = value[116:120]
+
+        return [node_id, node_type, sw_ver, register_id, register_date, node_state, monitor_mode, sensor_value, comm_error_num, service_error_num]
+
+    elif value[0] == '8':      #제어 노드
+        node_id = value[0:10]
+        node_type = anode_type[value[0:2]]
+        sw_ver = value[10:12]
+        register_id = value[12:14]
+        register_date = value[14:28]
+        node_state = value[28:30]
+        operating_mode = value[30:32]
+        actuator_state = value[32:52]
+        comm_error_num = value[52:56]
+        service_error_num = value[56:60]
+        return [node_id, node_type, sw_ver, register_id, register_date, node_state, operating_mode, actuator_state, comm_error_num, service_error_num]
+    else:                           #에러
+        pass
 
 
 # AP3-2 Gcg => server 통신 프로토콜 클래스 정의
@@ -129,8 +168,10 @@ class AP3_2_GCG(AP3_2):
             node_info = []
             split_protocol = {}
             # node_id 가 아니라 node_info이다. 이를 처리해주는것이 다시한번 필요
-            for i in range(0, node_group_end-14, 120):
-                node_info.append(node_group[i:i+120])
+
+            for i in range(0, node_num_dec*120, 120):
+                #node_info.append(node_group[i:i+120])
+                node_info.append(nodeInfoConverter(node_group[i:i+120]))
                 # 이 반복문에 의해 60byte의 크기 120개의 문자열을 가진 데이터들이 리스트에 저장이된다.
             sensing_period_hour = self.value2[:2]
             sensing_period_min = self.value2[2:4]

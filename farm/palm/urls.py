@@ -14,6 +14,7 @@ urlpatterns = [
     # 아마도 설정페이지가 될 부분
     path('gcg_page/', views.gcg_page, name = 'gcg_info'),
     path('gcg_page/gcg_detail/<str:gcg_serial>', views.gcg_detail, name = 'gcg_detail'),
+    path('gcg_page/gcg_detail_2/<str:gcg_serial>', views.gcg_detail_2, name = 'gcg_detail_2'),
 
     path('snode_page/', views.snode_page, name = 'snode_info'),
     path('snode_page/snode_detail/<str:gcg_serial>/<int:value1>/<int:value2>', views.snode_detail, name = 'snode_detail'),

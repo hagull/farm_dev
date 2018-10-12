@@ -113,12 +113,12 @@ body {
 
 /*------------- CONTROL NavBar -------------*/
 .content {
-
+  padding-left: 20px;
 }
 .control-nav {
   width: 100%;
   height: auto;
-  padding: 10px 20px;
+  padding: 10px 0;
   border-bottom: 1px solid #e7e7e7;
 }
 .control-inner{
@@ -159,27 +159,8 @@ body {
     width: 50px;
     height:50px;
   }
-  .control-nav{
-    position: relative;
-    display:block;
-    padding: 0px;
-    text-align: center;
-    background-color: rgba(99, 99, 99, 0.5);
-    z-index: 1000;
-  }
   .control-inner {
-    display:block;
-    position:absolute;
-  }
-  .control-inner a {
-
-    display: inline-block;
-    width: 100px;
-    padding: 0px;
-    margin: 5px;
-  }
-  .control-inner span{
-    font-size: 17px;
+    position: absolute;
   }
 }
 
@@ -285,3 +266,8 @@ body {
   clear: both;
 }
 /*------Control Log-----------*/
+
+
+/*--------------GCG PAGE---------*/
+
+/*--------------GCG PAGE---------*/
