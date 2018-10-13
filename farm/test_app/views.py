@@ -49,6 +49,5 @@ def index1(request):
 def index2(request):
     return render(request, 'test_app/index.html')
 def index3(request):
-    pass
     return render(request, 'test_app/index.html')
 
