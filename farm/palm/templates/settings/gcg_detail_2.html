@@ -1,0 +1,34 @@
+{% extends "settings/layout.html" %}
+{% block content %}
+
+<div class="gcg_page_body" style="
+padding-left: 50px;
+width: 100%;
+height: 100%; ">
+
+  <h3>통합제어기 일련번호 = {{gcg_id}}</h3>
+  <h3>노드 개수 = {{node_num|get_digit:"1" }}개</h3>
+  <table border='1' style="
+    border-collapse:collapse;
+    table-layout: auto;
+    font-size: 25px;
+    text-align: center;
+    vertical-align: middle;
+  ">
+    <thead>
+        <th style="padding: 10px 40px;">노드번호</th>
+        <th style="padding: 10px 40px;">종류</th>
+        <th style="padding: 10px 40px;">일련번호</th>
+    </thead>
+    <tbody class="node_info" onload="node_info({{ node_info }})">
+      {% for node in node_info %}
+        <tr>
+          <td>{{forloop.counter}}</td>
+          <td> <span class="node_type">{{ node.1 }}</span> </td>
+          <td> <span class="node_id"></span>{{ node.0 }}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

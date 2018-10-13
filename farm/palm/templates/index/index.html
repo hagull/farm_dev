@@ -1,0 +1,53 @@
+{% extends "index/layout.html" %}
+{% block content %}
+{% load palm_filters %}
+<div class = "btn btn-toolbar" role = "toolbar">
+    <form action="" method="get" class = "btn btn-group" role="group">
+        <input type="hidden" name = "house" value = "{{ gcg.id }}">
+        <input type="hidden" name = "type" value = 't'>
+        <input type="submit" value = "온도">
+    </form>
+    <form action="" method="get" class = "btn btn-group" role="group">
+        <input type="hidden" name = "house" value = "{{ gcg.id }}">
+        <input type="hidden" name = "type" value = 'h'>
+        <input type="submit" value = "습도">
+    </form>
+    <form action="" method="get" class = "btn btn-group" role="group">
+        <input type="hidden" name = "house" value = "{{ gcg.id }}">
+        <input type="hidden" name = "type" value = 'ec'>
+        <input type="submit" value = "EC">
+    </form>
+    <form action="" method="get" class = "btn btn-group" role="group">
+        <input type="hidden" name = "house" value = "{{ gcg.id }}">
+        <input type="hidden" name = "type" value = 'st'>
+        <input type="submit" value = "지온">
+    </form>
+</div>
+<h1>그래프 표시(미구현)</h1>
+<div class = "btn btn-primary">house : {{snode.0.gcg.id}} / {{snode.0.get_snode_type_display}} Graph</div>
+<hr>
+{% filter gcg.snode_set.all snode_type='t' as temp_snode %}
+{% filter gcg.snode_set.all snode_type='h' as humd_snode %}
+{% filter gcg.snode_set.all snode_type='ec' as ec_snode %}
+{% filter gcg.snode_set.all snode_type='st' as st_snode %}
+{# 임시 구현 이후 구현은 함수 실행시 값의 평균치를 계산하는 함수를 호출하여 진행 #}
+
+<div class = "btn btn-primary">house : {{temp_snode.0.gcg.id}} / 현재 온도 : {{temp_snode.snodevalue_set.all.0.snode_value}}</div>
+<div class = "btn btn-primary">house : {{humd_snode.0.gcg.id}} / 현재 습도 : {{humd_snode.snodevalue_set.all.0.snode_value}}</div>
+<div class = "btn btn-primary">house : {{ec_snode.0.gcg.id}} / 현재 EC : {{ec_snode.snodevalue_set.all.0.snode_value}}</div>
+<div class = "btn btn-primary">house : {{st_snode.0.gcg.id}} / 현재 지온 : {{st_snode.snodevalue_set.all.0.snode_value}}</div>
+<hr>
+{% filter anode anode_type='oc' as oc_anode %}
+{% for anode in oc_anode %}
+<div class = "btn btn-primary">house : {{anode.gcg.id}} / {{anode.get_anode_type_display}}</div>
+{% endfor %}
+<hr>
+<div class = "btn btn-toolbar" role = "toolbar">
+    {% for gcg in user.gcg_set.all %}
+<form action="" method="get" class = "btn btn-group" role = "group">
+    <input type="hidden" name = "house" value="{{gcg.id}}">
+    <input type="submit" value = "{{gcg.id}}">
+</form>
+    {% endfor %}
+    </div>
+{% endblock %}

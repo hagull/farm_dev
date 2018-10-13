@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html lang="kr" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+<<<<<<< HEAD
+
+    <link rel="stylesheet" href="{% static '/css/palm.css' %}">
+
+=======
+    {% block style %}
+    {% endblock %}
+    <link rel="stylesheet" href="{% static '/css/palm.css' %}">
+
+    <!-- 부트스트랩 -->
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="{% static '/bootstrap/vendor/bootstrap/css/bootstrap.min.css' %}">
+
+>>>>>>> 2537851... rtsp  크롬 확장프로그램 이용 cctv화면 송출
+    <!-- Custom Fonts 아이콘 가져오기 -->
+    <link href="{% static '/bootstrap/vendor/font-awesome/css/font-awesome.min.css' %}" rel="stylesheet" type="text/css">
+    <!-- jQuery -->
+    <script src="{% static '/bootstrap/vendor/jquery/jquery.min.js' %}"></script>
+    <!-- Bootstrap Core JavaScript -->
+    <script src="{% static '/bootstrap/vendor/bootstrap/js/bootstrap.min.js' %}"></script>
+
+
+=======
+    <script type="text/javascript" src="{% static '/js/vxgplayer-1.7.44.min.js' %}"></script>
+    <link rel="stylesheet" href="{% static '/css/vxgplayer-1.7.44.min.css' %}">
+
+  </head>
+  <body>
+
+      <div class="wrapper">
+        <div class="header">
+          <a class="" href="{% url 'palm:base' %}">
+            <strong>FarmPalmLABS</strong>
+          </a>
+        </div>
+
+        <div class="menu">
+          <a class="menu-divider" href="{% url 'palm:base' %}"><i class="fa fa-bar-chart-o fa-fw"></i>전체정보</span></a>
+          <a class="menu-divider" href="{% url 'palm:control' %}"><i class="fa fa-table fa-fw"></i>제어모드</span></a>
+
+          <a class="menu-divider" href="#"><i class="fa fa-edit fa-fw"></i>세부사항</span></a>
+          <a class="menu-divider" href="#"><i class="fa fa-bar-chart-o fa-fw"></i>일지작성</span></a>
+          <a href="#"><i class="fa fa-sitemap fa-fw"></i>특이사항</span></a>
+        </div>
+
+        <div class="content">
+          {% block content %}
+          {% endblock %}
+        </div>
+
+        <div class="footer">footer</div>
+<<<<<<< HEAD
+        
+      </div>
+      <script src="{% static '/js/palm.js' %}"></script>
+
+
+=======
+      </div>
+      <script src="{% static '/js/palm.js' %}"></script>
+>>>>>>> 2537851... rtsp  크롬 확장프로그램 이용 cctv화면 송출
+  </body>
+</html>

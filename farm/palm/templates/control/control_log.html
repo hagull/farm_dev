@@ -1,0 +1,38 @@
+{% extends "control/layout.html" %}
+{% block control-content %}
+
+<div class="control-log">
+  <div class="control-log-header">
+      <input type="number" name="" value="">구역
+      <input type="date" name="" value="">
+      <input type="date" name="" value="">
+      <button type="button" class="btn-retrieve">조회</button>
+  </div>
+  <div class="contorl-log-body">
+    <table class = "table table-hover table-bordered">
+    <!-- 여기서 데이터베이스 SQL 언어 발생-->
+      <thead>
+        <tr>
+          <th>시간</th>
+          <th>동</th>
+          <th>제어기</th>
+          <th>제어내용</th>
+          <th>동작확인</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td></td>
+          <td></td>
+          <td><small></small></td>
+          <td><small></small></td>
+          <td></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+  {# {% endif %} #}
+
+{% endblock %}

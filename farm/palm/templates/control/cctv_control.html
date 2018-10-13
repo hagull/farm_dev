@@ -1,0 +1,104 @@
+{% extends "control/layout.html" %}
+
+{% load staticfiles %}
+
+{% block control-content %}
+{% load palm_filters %}
+
+
+<div class="control-content">
+  <h1>CCTV</h1>
+  {% if house_cctv %}
+    {% if all_house_cctv %}
+    <h3>농가 전체 실외 CCTV</h3>
+    {% for cctv in all_house_cctv %}
+
+    <div class = "cctv">농가 전체 실외 CCTV {{forloop.counter}}</div>
+
+    <div class="vxgplayer"
+    id="vxg_media_player{{ forloop.counter }}"
+    width="720"
+    height="480"
+    url="{{ cctv.cctv_ip }}"
+    nmf-src="{% static '/pnacl/Release/media_player.nmf' %}"
+    nmf-path="{% static '/pnacl/Release/media_player.nmf' %}"
+    useragent-prefix="MMP/3.0"
+    latency="10000"
+    autohide="2"
+    volume="0.7"
+    autostart=true
+    avsync
+    mute
+    aspect-ratio
+    aspect-ratio-mode="1"
+    auto-reconnect></div>
+  <hr>
+
+    {% endfor %}
+    {% endif %}
+    <h3>각동 {{house_cctv.0.get_cctv_type_display}} CCTV</h3>
+    {% for cctv in house_cctv %}
+    <div class = "cctv">{{cctv.gcg}} {{ cctv.get_cctv_type_display }} CCTV {{ forloop.counter }}</div>
+    {% endfor %}
+  {% else %}
+  {% for cctv in gcg_cctv %}
+    <div class = "cctv">{{cctv.gcg}} {{ cctv.get_cctv_type_display }} CCTV {{ forloop.counter }}</div>
+  {% endfor %}
+  <hr>
+  {% endif %}
+
+  {% if all_house_cctv %}
+
+  {% else %}
+    {% filter snode snode_type='t' as temp_snode %}
+    {% filter snode snode_type='h' as humd_snode %}
+    <h2>Snode Value</h2>
+    <div class="">
+      <table class="sensor-table">
+        <thead>
+          <th>온도</th>
+          <th>습도</th>
+          <th>CO2</th>
+          <th>광량</th>
+          <th>배지온도</th>
+          <th>배지습도</th>
+          <th>배지EC</th>
+        </thead>
+        <tbody>
+          <!--
+          {{temp_snode.0}}
+          {{humd_snode.0}}-->
+          <td>37</td>
+          <td>66%</td>
+          <td>33%</td>
+          <td>28</td>
+          <td>37도</td>
+          <td>66%</td>
+          <td>0.1</td>
+        </tbody>
+
+      </table>
+    </div>
+
+{% if house_cctv %}
+  {% else %}
+    <h2>Anode Control</h2>
+      {% filter anode anode_type='oc' as oc_anode %}
+      {% filter anode anode_type='wm' as wm_anode %}
+
+    <h3>Open and Close Anode</h3>
+    {% for oc in oc_anode %}
+      <div class = "btn btn-primary">{{oc}}</div>
+      <a href="{% url "data:anode_request" gcg.id oc.id %}" class = "btn btn-primary">Anode Control</a>
+    {% endfor %}
+
+    <h3>Wartering Motor</h3>
+    {% for wm in wm_anode %}
+      <div class = "btn btn-primary">{{wm}}</div>
+      <a href="{% url "data:anode_request" gcg.id wm.id %}" class = "btn btn-primary">Anode Control</a>
+    {% endfor %}
+  {% endif %}
+  {% endif %}
+</div>
+
+{% endblock %}

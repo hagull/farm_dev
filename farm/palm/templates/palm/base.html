@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html lang="kr" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+<<<<<<< HEAD
+    <style media="screen">
+      video {
+        width: 80%;
+        height: 80%;
+      }
+    </style>
+=======
+>>>>>>> 2537851... rtsp  크롬 확장프로그램 이용 cctv화면 송출
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    {% block style %}
+    {% endblock %}
+    <link rel="stylesheet" href="{% static '/css/palm.css' %}">
+
+    <!-- 부트스트랩 -->
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="{% static '/bootstrap/vendor/bootstrap/css/bootstrap.min.css' %}">
+
+    <!-- Custom Fonts 아이콘 가져오기 -->
+    <link href="{% static '/bootstrap/vendor/font-awesome/css/font-awesome.min.css' %}" rel="stylesheet" type="text/css">
+    <!-- jQuery -->
+    <script src="{% static '/bootstrap/vendor/jquery/jquery.min.js' %}"></script>
+    <!-- Bootstrap Core JavaScript -->
+    <script src="{% static '/bootstrap/vendor/bootstrap/js/bootstrap.min.js' %}"></script>
+
+  </head>
+  <body>
+
+      <div class="wrapper">
+        <div class="header">
+          <a class="" href="{% url 'palm:base' %}">
+            <strong>FarmPalmLABS</strong>
+          </a>
+        </div>
+
+        <div class="menu">
+          <a class="menu-divider" href="{% url 'palm:base' %}"><i class="fa fa-bar-chart-o fa-fw"></i>전체정보</span></a>
+          <a class="menu-divider" href="{% url 'palm:control' %}"><i class="fa fa-table fa-fw"></i>제어모드</span></a>
+
+          <a class="menu-divider" href="#"><i class="fa fa-edit fa-fw"></i>세부사항</span></a>
+          <a class="menu-divider" href="#"><i class="fa fa-bar-chart-o fa-fw"></i>일지작성</span></a>
+          <a href="#"><i class="fa fa-sitemap fa-fw"></i>특이사항</span></a>
+        </div>
+
+        <div class="content">
+          {% block content %}
+          {% endblock %}
+<<<<<<< HEAD
+
+          <OBJECT classid="clsid:9BE31822-FDAD-461B-AD51-BE1D1C159921"
+          codebase="http://download.videolan.org/pub/videolan/vlc/2.2.4/win32/vlc-2.2.4-win32.exe"
+          width="100%" height="100%" id="vlc" events="True">
+              <embed type="application/x-vlc-plugin" pluginspage="http://www.videolan.org" name="vlc" />
+              <param name="Src" value="rtsp://admin:Farmpalm!@192.168.0.47:554/Streaming/Channels/101" />
+              <param name="autostart" value="true" />
+              <param name="ShowDisplay" value="false" />
+              <param name="AutoLoop" value="false" />
+              <param name="AutoPlay" value="true" />
+          </OBJECT>
+
+
+=======
+>>>>>>> 2537851... rtsp  크롬 확장프로그램 이용 cctv화면 송출
+        </div>
+
+        <div class="footer">footer</div>
+      </div>
+  </body>
+</html>

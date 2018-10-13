@@ -1,0 +1,14 @@
+{% extends "settings/layout.html" %}
+{% block content %}
+<p></p>
+{% for gcg in gcg %}
+<a href="{% url "palm:gcg_detail" gcg.serial_num %}" class = "btn btn-primary">gcg 일련번호 : {{gcg.serial_num}} 정보요청</a>
+{% endfor %}
+
+{% for gcg in gcg %}
+<a href="{% url "palm:gcg_detail_2" gcg.serial_num %}" class = "btn btn-primary">gcg 일련번호 : {{gcg.serial_num}} 정보요청</a>
+{% endfor %}
+{% endblock %}
+
+{% endblock %}
+

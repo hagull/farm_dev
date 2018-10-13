@@ -1,0 +1,14 @@
+{% extends "settings/layout.html" %}
+{% block content %}
+<h3>gcg_id = {{gcg_id}}</h3>
+<h3>sw_ver = {{sw_ver}}</h3>
+<h3>node_num = {{node_num}}</h3>
+{% for node in node_info %}
+<h3>node_{{forloop.counter}}_info : {{node}}</h3>
+{% endfor %}
+<h3>sensing_period : {{sensing_period_hour}}:{{sensing_period_min}}:{{sensing_period_sec}}</h3>
+<h3>gcg_state : {{gcg_state}}</h3>
+<h3>comm_error_num : {{comm_error_num}}</h3>
+<h3>service_error_num : {{service_error_num}}</h3>
+<h3>etc : {{etc}}</h3>
+{% endblock %}

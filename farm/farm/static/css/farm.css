@@ -1,0 +1,271 @@
+body {
+  background-color: #f8f8f8;
+}
+
+.wrapper {
+  width: 100%;
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+}
+
+
+.header{
+  grid-column: span 12;
+}
+.footer{
+  grid-column: span 12;
+}
+
+@media (min-width: 750px)   /* 모바일 외에 */
+{
+  .wrapper {
+    grid-template-rows: 70px minmax(800px, auto) 50px;  /* header (menu, content) footer 3가지 영역 크기 */
+  }
+  .menu {
+    grid-column: span 1;
+  }
+  .content {
+    grid-column: span 11;
+    grid-template-rows: minmax(700px, auto);
+  }
+}
+
+@media (max-width: 749px)   /* 모바일 화면 */
+{
+  .wrapper {
+    grid-template-rows: 70px auto minmax(800px, auto) 50px;  /* header menu, content, footer 4가지 영역 */
+  }
+  .menu {
+    width: 375px;
+    grid-column: span 12;
+  }
+  .content {
+    grid-column: span 12;
+    grid-template-rows: minmax(700px, auto);
+  }
+}
+
+
+
+
+.header, .content{
+  border: 1px solid #e7e7e7;
+}
+.menu {
+  border-right: 1px solid #e7e7e7;
+}
+.footer{
+  border-top: 1px solid #e7e7e7;
+}
+/* header css */
+
+
+.header a {
+  display: block;
+  box-sizing: border-box;
+  padding: 15px 15px;
+  font-size: 25px;
+  color: #928e8e;
+}
+.header a:visited, a:link, a:active{
+  color: #928e8e;
+}
+
+
+/*------------- menu Css -------------*/
+.menu {
+  display:block;
+  width: 100%;
+}
+.menu a {
+  box-sizing: border-box;
+  color: #337ab7;
+}
+.menu a:hover, a:visited, a:link, a:active{
+  color: #337ab7;
+}
+@media (max-width: 749px)     /*모바일 화면 */
+{
+  .menu a {
+    display: inline-block;
+    float: left;
+    width: 20%;
+    padding: 4px 0;
+    margin: 0;
+    font-size: 14px;
+    text-align: center;
+  }
+  .menu i {
+    display: none;
+  }
+  .menu .menu-divider {
+    border-right: 1px solid #e7e7e7;
+    magin: 0;
+  }
+}
+@media (min-width: 750px)   /* 모바일 외에 */
+{
+  .menu a {
+    display: block;
+    width: 200px;
+    padding: 15px;
+    font-size: 18px;
+    border-bottom: 1px solid #e7e7e7;
+  }
+}
+
+
+
+
+/* --------------위까지 기본 Layout ----------------*/
+
+/*------------- CONTROL Css -------------*/
+.content {
+/*  height: auto;
+  overflow-y: auto;*/
+}
+.control-inner span {
+  color: white;
+}
+.control-inner a:active, a:hover, a:visited, a:linke{
+  color: white;
+  text-decoration: none;
+}
+.control-inner-primary {
+  background-color: #337ab7;
+  border: 1px solid #2e6da4;
+  border-radius: 5px;
+  text-align:center;
+  font-weight: 400;
+}
+
+.control-content {
+  position: relative;
+}
+.control-content .cctv{
+  box-sizing: border-box;
+  border: 1px solid black;
+}
+
+.sensor-table{
+  border: 1px solid #777;
+}
+.sensor-table th, td {
+  width: auto;
+  height: 40px;
+  text-align: center;
+  border: 1px solid black;
+  padding: 10px;
+}
+@media (max-width: 749px)     /*모바일 화면 */
+{
+  .control-content {
+    left: 15%;
+  }
+  .control-nav {
+    width: 15%;
+    margin: 0px;
+    display: inline-block;
+    position:fixed;
+  }
+  .control-inner button, a {
+    display: block;
+    width: 40px;
+    height: 25px;
+    margin: 5px;
+    padding: 0;
+  }
+  .control-content .cctv{
+    width: 80%;
+    height: 100px;
+    margin-bottom : 5px;
+  }
+  .sensor-table th, td {
+    font-size: 10px;
+  }
+}
+@media (min-width: 750px)  /* 모바일 외에 */
+{
+  .control-content {
+    left: 20px;
+  }
+  .control-nav {
+    padding:20px;
+    width: 100%;
+    height: auto;
+    border-bottom: 1px solid #e7e7e7;
+  }
+  .control-inner button, a {
+    display: inline-block;
+    width: 100px;
+    height: 50px;
+    padding: 10px 0px;
+    margin: 0, 5px, 0, 5px;
+  }
+  .control-inner span {
+    font-size: 20px;
+  }
+  .control-content .cctv{
+    width: 45%;
+    height: 200px;
+    display : inline-block;
+    margin : 10px;
+  }
+  .sensor-table th, td {
+    font-size: 18px;
+  }
+}
+
+
+/*-------Palm PAGE------------*/
+.body-palm-left{
+  display: grid;
+  grid-column-start: span 3;
+  grid-column-end: 7
+}
+.body-palm-right{
+  display: grid;
+  grid-column-start: 7;
+  grid-column-end: span 3;
+}
+.palm-nav-btn {
+  display:inherit;
+  justify-content: center;
+  align-content: center;
+  grid-template-columns: repeat(3);   /*기존 grid 속에 3*3 grid를 그리고 center에 위치 */
+  grid-template-rows: repeat(3);
+  border: 1px solid black;
+  margin: 5px;
+}
+/*-------Palm PAGE------------*/
+
+
+
+
+/*------Control Log-----------*/
+.control-log {
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  padding: 20px;
+  margin: 0;
+}
+.control-log-header {
+  margin-bottom: 10px;
+  width:100%;
+  float: left;
+}
+.control-log-header .btn-retrieve {
+  background-color: #337ab7;
+  border: 1px solid #2e6da4;
+  border-radius: 5px;
+  color: white;
+  text-align:center;
+  font-size: 18px;
+  float:right;
+}
+.control-log-body {
+  clear: both;
+}
+/*------Control Log-----------*/

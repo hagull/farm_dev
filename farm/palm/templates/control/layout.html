@@ -1,0 +1,28 @@
+{% extends "layout.html" %}
+{% block content %}
+{% load palm_filters %}
+
+  <div class="control-nav">
+    <div class="control-inner">
+      {% if user.allhousecctv_set.all.exists %}
+      <a class="control-inner-primary" href="{% url 'palm:control' %}?house=out_all"><span>실외</span></a>
+      {% endif %}
+      <a class="control-inner-primary" href="{% url 'palm:control' %}?house=in_all"><span>실내</span></a>
+      {% for gcg in user.gcg_set.all %}
+      <a class="control-inner-primary house_num" href="{% url 'palm:control' %}?house={{ gcg.id }}"><span>{{forloop.counter}} 동</span></a>
+      {% endfor %}
+      <a class="control-inner-primary" href="{% url 'palm:control_log' %}"><span>로그</span></a>
+    </div>
+  </div>
+
+
+  <div class="mobile-nav" onclick="m_btn()">
+    <div class="">
+
+    </div>
+  </div>
+
+
+  {% block control-content %}
+  {% endblock %}
+{% endblock %}
